@@ -1,24 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+using System.Net;
+using System.Text;
 
-namespace imagefinder
+namespace Examples.System.Net
 {
-    public class Program
+  public class WebRequestGetExample
+  {
+    public static void Main()
     {
-        public static void Main(string[] args)
-        {
-            CreateWebHostBuilder(args).Build().Run();
-        }
-
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+      // Create a request for the URL. 		
+      WebRequest request = WebRequest.Create("https://api.unsplash.com/photos");
+      request.Headers.Add("Authorization", "Client-ID a43c3e64f885a5c06277e2508ad66961ba50161b989c6c8f2c97cf6634b7eff7");
+      // If required by the server, set the credentials.
+      // request.Credentials = CredentialCache.DefaultCredentials;
+      // Get the response.
+      HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+      // Display the status.
+      Console.WriteLine(response.StatusDescription);
+      // Get the stream containing content returned by the server.
+      Stream dataStream = response.GetResponseStream();
+      // Open the stream using a StreamReader for easy access.
+      StreamReader reader = new StreamReader(dataStream);
+      // Read the content.
+      string responseFromServer = reader.ReadToEnd();
+      // Display the content.
+      Console.WriteLine(responseFromServer);
+      // Cleanup the streams and the response.
+      reader.Close();
+      dataStream.Close();
+      response.Close();
     }
+  }
 }
