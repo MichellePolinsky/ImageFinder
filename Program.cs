@@ -30,6 +30,11 @@ namespace Examples.System.Net
       reader.Close();
       dataStream.Close();
       response.Close();
+
+      // convert the json string (responseFromServer) into a C# POCO (plain old C# Object)
+      // loop over that object, foreach image 
+      // do a webrequest to get the lat/long
+
     }
   }
 }
